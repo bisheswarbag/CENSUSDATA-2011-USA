@@ -1,0 +1,12 @@
+create database census;
+
+use census;
+
+create table censusdata(age STRING,education STRING,maritalStatus STRING,gender STRING,taxFileStatus STRING,income STRING,parents STRING,countryOfBirth STRING,citizenship STRING,weeksworked STRING)
+  > row format delimited
+    > fields terminated by ','
+    > stored as textfile;
+
+LOAD DATA LOCAL INPATH '/home/hduser/sample.dat' OVERWRITE INTO TABLE censusdata;
+
+select education,ROUND((sum(SUBSTR(income,12))/COUNT(education)),2) as percapitaincome from censusdata group by education;

@@ -1,0 +1,12 @@
+create database census;
+
+use census;
+
+create table censusdata(age STRING,education STRING,maritalStatus STRING,gender STRING,taxFileStatus STRING,income STRING,parents STRING,countryOfBirth STRING,citizenship STRING,weeksworked STRING)
+  > row format delimited
+    > fields terminated by ','
+    > stored as textfile;
+
+LOAD DATA LOCAL INPATH '/home/hduser/sample.dat' OVERWRITE INTO TABLE censusdata;
+
+select count(weeksworked) from censusdata where SUBSTR(gender,13,6)='Female' and (SUBSTR(maritalstatus,20,7)='Widowed' OR SUBSTR(maritalstatus,20,8)='Divorced') and regexp_extract(weeksworked, '[0-9]+', 0)>0;
